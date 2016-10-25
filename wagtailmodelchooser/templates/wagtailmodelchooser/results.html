@@ -1,0 +1,37 @@
+{% load wagtailadmin_tags %}
+
+<div class="row">
+
+	<div class="result-list col12">
+		{% if not object_list %}
+			<div class="nice-padding" style="margin-top:30px;">
+				{% if is_searching %}
+					<p>No {{ opts.verbose_name }} found matching your search.</p>
+				{% else %}
+					<p>There are no {{ opts.verbose_name }}.</p>
+				{% endif %}
+			</div>
+		{% else %}
+			<table class="listing">
+				<thead>
+					<tr class="table-headers">
+						<th>Title</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for instance in object_list %}
+						<tr>
+							<td class="title">
+								<h2><a class="model-choice" data-pk="{{ instance.pk }}" href="#">
+									{{ instance }}
+								</a></h2>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+	</div>
+
+	{% paginate page %}
+</div>

@@ -1,0 +1,7 @@
+*.pyc
+*.egg-info
+dist/
+*.sqlite*
+.tox/
+/settings.py
+build/
