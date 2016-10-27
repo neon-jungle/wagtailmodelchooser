@@ -58,11 +58,9 @@ def chooser(request, app_label, model_name, filter_name=None):
     if filter_name is not None:
         try:
             filter_func = registry.filters[model, filter_name]
-            instance_str = request.GET['instance']
-            model, instance = instance_from_str(instance_str)
-        except (KeyError, ValueError):
+        except KeyError:
             raise Http404
-        qs = filter_func(qs, instance)
+        qs = filter_func(qs)
 
     paginator, page = paginate(request, qs, per_page=10)
     ajax = 'ajax' in request.GET

@@ -3,11 +3,6 @@ function createModelChooser(id, url) {
     var title = chooserElement.find('.title');
     var input = $('#' + id);
 
-    var instance = window.instance;
-    if (instance) {
-        url += '?instance=' + instance;
-    }
-
     chooserElement.find('.action-choose').click(function() {
         ModalWorkflow({
             url: url,
