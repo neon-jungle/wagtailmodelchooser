@@ -28,7 +28,7 @@ Quick start
 ===========
 
 To enable the chooser for your model, you must register the model.
-For simple cases, decorate your model with ``@model_chooser``:
+For simple cases, decorate your model with ``@register_model_chooser``:
 
 .. code:: python
 

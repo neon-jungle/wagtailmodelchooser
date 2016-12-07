@@ -5,7 +5,10 @@ class Registry(object):
 
     def register_chooser(self, chooser):
         """Adds a model chooser definition to the registry."""
-        self.choosers[chooser.model] = chooser()
+        if isinstance(chooser, Chooser):
+            self.choosers[chooser.model] = chooser()
+        else:
+            self.register_simple_chooser(chooser)
         return chooser
 
     def register_simple_chooser(self, model, **kwargs):
