@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='Book',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.Author')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='app.Author')),
             ],
             options={
                 'abstract': False,
@@ -41,7 +41,8 @@ class Migration(migrations.Migration):
             name='ContentPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('body', wagtail.wagtailcore.fields.StreamField((('text', wagtail.wagtailcore.blocks.RichTextBlock()), ('author', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.author'))))),
+                ('body', wagtail.wagtailcore.fields.StreamField((('text', wagtail.wagtailcore.blocks.RichTextBlock()), ('author', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.author')), ('book', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.book'))))),
+                ('favourite_book', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='app.Book')),
             ],
             options={
                 'abstract': False,

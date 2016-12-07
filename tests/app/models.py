@@ -15,7 +15,7 @@ class AuthorQuerySet(SearchableQuerySetMixin, models.QuerySet):
     pass
 
 
-@register_model_chooser
+@register_model_chooser(icon='user')
 class Author(models.Model, index.Indexed):
     name = models.CharField(max_length=255)
 
@@ -40,15 +40,21 @@ class Book(Page):
 @register_model_chooser
 class BookChooser(Chooser):
     model = Book
-    menu_icon = 'page'
+    icon = 'form'
 
 
 class ContentPage(Page):
     body = StreamField([
         ('text', RichTextBlock()),
         ('author', ModelChooserBlock(Author)),
+        ('book', ModelChooserBlock(Book)),
     ])
+
+    favourite_book = models.ForeignKey(
+        Book, blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
 
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
+        ModelChooserPanel('favourite_book'),
     ]
