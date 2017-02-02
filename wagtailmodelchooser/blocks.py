@@ -7,8 +7,8 @@ from .widgets import AdminModelChooser
 
 
 class ModelChooserBlock(ChooserBlock):
-    def __init__(self, target_model, *, filter_name=None, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, target_model, filter_name=None, **kwargs):
+        super(ModelChooserBlock, self).__init__(**kwargs)
         self._target_model = target_model
 
         self.filter_name = filter_name
@@ -33,7 +33,7 @@ class ModelChooserBlock(ChooserBlock):
         return registry.choosers[self.target_model]
 
     def deconstruct(self):
-        name, args, kwargs = super().deconstruct()
+        name, args, kwargs = super(ModelChooserBlock, self).deconstruct()
 
         if args:
             args = args[1:]  # Remove the args target_model
