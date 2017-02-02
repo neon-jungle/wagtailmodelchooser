@@ -1,6 +1,6 @@
-===================
-wagtailmodelchooser
-===================
+=====================
+Wagtail model chooser
+=====================
 
 A plugin for Wagtail that provides a ``ModelChooserPanel`` and ``ModelChooserBlock``
 for arbitrary models.
@@ -10,7 +10,7 @@ Installing
 
 Install using pip::
 
-    pip install wagtailmodelchooser
+    pip install wagtail-modelchooser
 
 Then add it to your ``INSTALLED_APPS``:
 
