@@ -6,9 +6,9 @@
 		{% if not object_list %}
 			<div class="nice-padding" style="margin-top:30px;">
 				{% if is_searching %}
-					<p>No {{ opts.verbose_name }} found matching your search.</p>
+					<p>No {{ opts.verbose_name_plural }} found matching your search.</p>
 				{% else %}
-					<p>There are no {{ opts.verbose_name }}.</p>
+					<p>There are no {{ opts.verbose_name_plural }}.</p>
 				{% endif %}
 			</div>
 		{% else %}
