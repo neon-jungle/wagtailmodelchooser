@@ -4,7 +4,7 @@ function createModelChooser(id, url) {
     var input = $('#' + id);
 
     chooserElement.find('.action-choose').click(function() {
-        ModalWorkflow({
+        var modal = ModalWorkflow({
             url: url,
             responses: {
                 instanceChosen: function(instanceData) {
@@ -14,6 +14,7 @@ function createModelChooser(id, url) {
                 }
             }
         });
+        modal.body.on("submit", "form", function (e) { e.preventDefault(); });
     });
 
     $('.action-clear', chooserElement).click(function() {

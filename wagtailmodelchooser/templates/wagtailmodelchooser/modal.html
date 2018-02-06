@@ -13,7 +13,7 @@
 	{# This is to allow pagination links to be generated from the form action URL #}
 	<form class="search-bar" action="{{ chooser_url }}" method="GET">
 		{% if is_searchable %}
-			<input type="search" name="q" id="id_q" placeholder="Search...">
+			<input type="search" name="q" id="id_q" placeholder="Search..." autocomplete="off">
 		{% endif %}
 	</form>
 
