@@ -13,7 +13,10 @@ INSTALLED_APPS = [
     'wagtail.wagtailsites',
     'wagtail.wagtailsnippets',
     'wagtail.wagtailsearch',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailimages',
     'wagtail.contrib.wagtailroutablepage',
+    'wagtail.contrib.modeladmin',
 
     'django.contrib.admin',
     'django.contrib.auth',
