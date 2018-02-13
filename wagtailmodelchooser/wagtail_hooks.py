@@ -1,6 +1,10 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils.html import format_html
-from wagtail.wagtailcore import hooks
+
+try:
+    from wagtail.core import hooks
+except ImportError:  # fallback for Wagtail <2.0
+    from wagtail.wagtailcore import hooks
 
 import wagtailmodelchooser.urls
 

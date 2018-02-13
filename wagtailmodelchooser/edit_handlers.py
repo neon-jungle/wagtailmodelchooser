@@ -1,7 +1,11 @@
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from wagtail.utils.decorators import cached_classmethod
-from wagtail.wagtailadmin.edit_handlers import BaseChooserPanel
+
+try:
+    from wagtail.admin.edit_handlers import BaseChooserPanel
+except ImportError:  # fallback for Wagtail <2.0
+    from wagtail.wagtailadmin.edit_handlers import BaseChooserPanel
 
 from .widgets import AdminModelChooser
 

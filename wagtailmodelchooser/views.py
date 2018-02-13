@@ -4,8 +4,13 @@ from django.apps import apps
 from django.http import Http404
 from django.shortcuts import render
 from wagtail.utils.pagination import paginate
-from wagtail.wagtailadmin.modal_workflow import render_modal_workflow
-from wagtail.wagtailsearch.index import Indexed
+
+try:
+    from wagtail.admin.modal_workflow import render_modal_workflow
+    from wagtail.search.index import Indexed
+except ImportError:  # fallback for Wagtail <2.0
+    from wagtail.wagtailadmin.modal_workflow import render_modal_workflow
+    from wagtail.wagtailsearch.index import Indexed
 
 from . import registry
 
