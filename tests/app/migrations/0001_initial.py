@@ -3,8 +3,8 @@
 from __future__ import unicode_literals
 
 import django.db.models.deletion
-import wagtail.wagtailcore.blocks
-import wagtail.wagtailcore.fields
+import wagtail.core.blocks
+import wagtail.core.fields
 from django.db import migrations, models
 
 import wagtailmodelchooser.blocks
@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
             name='ContentPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('body', wagtail.wagtailcore.fields.StreamField((('text', wagtail.wagtailcore.blocks.RichTextBlock()), ('author', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.author')), ('book', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.book'))))),
+                ('body', wagtail.core.fields.StreamField((('text', wagtail.core.blocks.RichTextBlock()), ('author', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.author')), ('book', wagtailmodelchooser.blocks.ModelChooserBlock(target_model='app.book'))))),
                 ('favourite_book', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='app.Book')),
             ],
             options={

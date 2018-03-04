@@ -1,6 +1,6 @@
 from django.utils.functional import cached_property, lazy
-from wagtail.wagtailcore.blocks import ChooserBlock
-from wagtail.wagtailcore.utils import resolve_model_string
+from wagtail.core.blocks import ChooserBlock
+from wagtail.core.utils import resolve_model_string
 
 from . import registry
 from .widgets import AdminModelChooser

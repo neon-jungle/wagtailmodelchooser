@@ -1,10 +1,10 @@
 from django.db import models
-from wagtail.wagtailadmin.edit_handlers import StreamFieldPanel
-from wagtail.wagtailcore.blocks import RichTextBlock
-from wagtail.wagtailcore.fields import StreamField
-from wagtail.wagtailcore.models import Page
-from wagtail.wagtailsearch import index
-from wagtail.wagtailsearch.queryset import SearchableQuerySetMixin
+from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.core.blocks import RichTextBlock
+from wagtail.core.fields import StreamField
+from wagtail.core.models import Page
+from wagtail.search import index
+from wagtail.search.queryset import SearchableQuerySetMixin
 
 from wagtailmodelchooser import Chooser, register_model_chooser
 from wagtailmodelchooser.blocks import ModelChooserBlock
