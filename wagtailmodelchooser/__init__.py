@@ -1,4 +1,11 @@
 from .utils import kwarg_decorator, last_arg_decorator
+from .version import version as __version__
+from .version import version_info
+
+__all__ = [
+    '__version__', 'version_info', 'registry', 'register_model_chooser',
+    'register_simple_model_chooser', 'register_filter',
+]
 
 
 class Registry(object):
