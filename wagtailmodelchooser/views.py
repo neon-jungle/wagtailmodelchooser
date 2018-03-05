@@ -3,9 +3,9 @@ import re
 from django.apps import apps
 from django.http import Http404
 from django.shortcuts import render
+from wagtail.admin.modal_workflow import render_modal_workflow
+from wagtail.search.index import Indexed
 from wagtail.utils.pagination import paginate
-from wagtail.wagtailadmin.modal_workflow import render_modal_workflow
-from wagtail.wagtailsearch.index import Indexed
 
 from . import registry
 

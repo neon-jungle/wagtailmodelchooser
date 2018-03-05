@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
+from wagtail.core.models import Page
 from wagtail.tests.utils import WagtailTestUtils
-from wagtail.wagtailcore.models import Page
 
 from tests.app.models import Author
 
