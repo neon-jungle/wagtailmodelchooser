@@ -50,10 +50,10 @@ or ``ModelChooserBlock`` in a ``StreamField`` definition:
 
 .. code:: python
 
-    from wagtail.wagtailcore.blocks import RichTextBlock
-    from wagtail.wagtailcore.fields import StreamField
-    from wagtail.wagtailcore.models import Page
-    from wagtail.wagtailadmin.edit_handlers import FieldPanel, StreamFieldPanel
+    from wagtail.core.blocks import RichTextBlock
+    from wagtail.core.fields import StreamField
+    from wagtail.core.models import Page
+    from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
     from wagtailmodelchooser.blocks import ModelChooserBlock
     from wagtailmodelchooser.edit_handlers import ModelChooserPanel
 
