@@ -22,7 +22,7 @@ Then add it to your ``INSTALLED_APPS``:
         # ...
     ]
 
-It works with Wagtail 1.4 and upwards.
+It works with Wagtail 2.0 and upwards.
 
 Quick start
 ===========
