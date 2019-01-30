@@ -22,7 +22,8 @@ Then add it to your ``INSTALLED_APPS``:
         # ...
     ]
 
-It works with Wagtail 2.0 and upwards.
+It works with Wagtail 2.2 and upwards.
+For older versions of Wagtail check previous versions of the package.
 
 Quick start
 ===========
