@@ -82,5 +82,9 @@ def chooser(request, app_label, model_name, filter_name=None):
         return render_modal_workflow(
             request,
             'wagtailmodelchooser/modal.html',
-            'wagtailmodelchooser/modal.js',
-            context)
+            None,  # Deprecated argument (still required in Wagtail 2.2)
+            template_vars=context,
+            json_data={
+                'step': 'show_model_chooser'
+            }
+        )
