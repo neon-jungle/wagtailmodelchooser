@@ -19,6 +19,16 @@ class ModelChooserPanel(BaseChooserPanel):
         if filter_name is not None:
             FILTERS[filter_name] = filter
 
+    def clone(self):
+        return self.__class__(
+            field_name=self.field_name,
+            filter_name=self.filter_name,
+            widget=self.widget if hasattr(self, 'widget') else None,
+            heading=self.heading,
+            classname=self.classname,
+            help_text=self.help_text
+        )
+
     def widget_overrides(self):
         return {self.field_name: AdminModelChooser(
             model=self.target_model, filter_name=self.filter_name)}
