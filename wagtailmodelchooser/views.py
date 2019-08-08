@@ -1,11 +1,11 @@
 import re
 
 from django.apps import apps
+from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import render
 from wagtail.admin.modal_workflow import render_modal_workflow
 from wagtail.search.index import Indexed
-from wagtail.utils.pagination import paginate
 
 from . import registry
 
@@ -62,7 +62,8 @@ def chooser(request, app_label, model_name, filter_name=None):
             raise Http404
         qs = filter_func(qs)
 
-    paginator, page = paginate(request, qs, per_page=10)
+    paginator = Paginator(qs, per_page=10)
+    page = paginator.get_page(request.GET.get('p'))
     ajax = 'ajax' in request.GET
 
     context = {
