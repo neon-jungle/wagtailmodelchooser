@@ -1,11 +1,11 @@
 import re
 
 from django.apps import apps
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import Http404
 from django.shortcuts import render
 from wagtail.admin.modal_workflow import render_modal_workflow
 from wagtail.search.index import Indexed
-from wagtail.utils.pagination import paginate
 
 from . import registry
 
@@ -62,7 +62,18 @@ def chooser(request, app_label, model_name, filter_name=None):
             raise Http404
         qs = filter_func(qs)
 
-    paginator, page = paginate(request, qs, per_page=10)
+    paginator = Paginator(qs, per_page=10)
+    page_number = request.GET.get('p', 1)
+    try:
+        page = paginator.get_page(page_number)
+    except AttributeError:  # Django < 2.0
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+
     ajax = 'ajax' in request.GET
 
     context = {
