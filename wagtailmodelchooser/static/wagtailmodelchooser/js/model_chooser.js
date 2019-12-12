@@ -46,7 +46,7 @@ function setupModal(modal, jsonData) {
     searchForm.submit(search);
     var searchFieldChange = function(e) {
         clearTimeout($.data(this, 'timer'));
-        var wait = setTimeout(search, 100);
+        var wait = setTimeout(search, 250);
         $(this).data('timer', wait);
     }
     searchForm.on('input', searchFieldChange);
