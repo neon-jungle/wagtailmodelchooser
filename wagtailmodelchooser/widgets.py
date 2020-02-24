@@ -41,7 +41,7 @@ class AdminModelChooser(AdminChooser):
         if self.filter_name:
             kwargs['filter_name'] = self.filter_name
 
-        return "createModelChooser({id}, {url});".format(
+        return "wagtail.ui.ModelChooser.setupWagtailWidget({id}, {url});".format(
             id=json.dumps(id_),
             url=json.dumps(reverse('model_chooser', kwargs=kwargs)),
             filter_name=json.dumps(self.filter_name))
