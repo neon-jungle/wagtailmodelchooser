@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="left">
 			<div class="col">
-				{% block h1 %}<h1 {% if chooser.header_icon %}class="icon icon-{{ chooser.header_icon }}"{% endif %}>Choose <span>{{ view.verbose_name }}</span></h1>{% endblock %}
+				{% block h1 %}<h1 {% if chooser.header_icon %}class="icon icon-{{ chooser.header_icon }}"{% endif %}>Choose <span>{{ opts.verbose_name }}</span></h1>{% endblock %}
 			</div>
 		</div>
 	</div>
@@ -11,13 +11,19 @@
 <div class="nice-padding">
 	{# Need to keep the form in the HTML, even if the snippet is not searchable #}
 	{# This is to allow pagination links to be generated from the form action URL #}
-	<form class="search-bar" action="{{ chooser_url }}" method="GET">
+	{% block search_form %}
+	<form class="search-bar" action="{{ chooser_url }}" method="GET" style="margin-bottom:20px">
+		{% block search_fields %}
 		{% if is_searchable %}
 			<input type="search" name="q" id="id_q" placeholder="Search..." autocomplete="off">
 		{% endif %}
+		{% endblock %}
 	</form>
+	{% endblock %}
 
 	<div id="search-results" class="listing snippets">
+		{% block search_results %}
 		{% include "wagtailmodelchooser/results.html" %}
+		{% endblock %}
 	</div>
 </div>
