@@ -10,13 +10,6 @@ function ModelChooser() {
     };
 }
 
-ModelChooser.prototype.callHooks = function callHooks() {
-    var name = arguments[0];
-    var args = arguments.slice(1);
-
-
-}
-
 /**
  * Register a function to be called when the modal is visible. Allows
  * you to register any additional javascript needed.
