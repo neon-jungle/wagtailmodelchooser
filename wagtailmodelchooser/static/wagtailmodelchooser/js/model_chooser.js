@@ -1,9 +1,46 @@
 (function() {
 /**
+ * Public API for the modal
+ */
+function ModelChooser() {
+    this.hooks = {
+        "setup": [],
+        "choose": [],
+        "ajax": [],
+    };
+}
+
+/**
+ * Register a function to be called when the modal is visible. Allows
+ * you to register any additional javascript needed.
+ */
+ModelChooser.prototype.addSetupHook = function addSetupHook(hook) {
+    this.hooks["setup"].push(hook);
+};
+
+/**
+ * Register a function to be called once an instance is chosen. Return
+ * true to choose the instance, or false to block.
+ */
+ModelChooser.prototype.addChooseHook = function addChooseHook(hook) {
+    this.hooks["choose"].push(hook);
+};
+
+/**
+ * Register a function to be called just before ajax requests. Return
+ * a dictionary of parameters, or null to cancel the request.
+ */
+ModelChooser.prototype.addAjaxHook = function addAjaxHook(hook) {
+    this.hooks["ajax"].push(hook);
+};
+
+/**
  * Once the model chooser modal has appeared, register the event
  * listeners we need for that.
  */
-function setupModal(modal, jsonData) {
+ModelChooser.prototype.setupModal = function setupModal(modal, jsonData) {
+    var that = this;
+
     /**
      * Attach event handlers to the results. A live listener
      * because we replace the modal contents with Ajax.
@@ -11,6 +48,19 @@ function setupModal(modal, jsonData) {
     modal.body.on('click', 'a.model-choice', function(e) {
         e.preventDefault();
         var instance = $(this);
+
+        // Call choose hooks
+        for (var i=0;i<that.hooks["choose"].length;i++) {
+            var hook = that.hooks["choose"][i];
+
+            // Allow mutation of params
+            var result = hook.call(that, modal, instance);
+            if (!result) {
+                // Block choice
+                return;
+            }
+        }
+
         modal.respond('instanceChosen', {
             'string': instance.text(),
             'pk': instance.data('pk'),
@@ -32,59 +82,95 @@ function setupModal(modal, jsonData) {
      * Search the list
      */
     var searchForm = modal.body.find('form.search-bar');
-    var searchField = searchForm.find('#id_q');
     var searchUrl = searchForm.attr('action');
     var searchResults = modal.body.find('#search-results');
+    // Builds a dictionary of the values of fields in searchForm
+    function buildSearchDict() {
+        var rtn = {};
+        searchForm.find("input, select, textarea").each(function() {
+            var elm = $(this);
+            if (elm.is("input[type=checkbox], input[type=radio]")) {
+                if (elm.prop("checked")) {
+                    rtn[elm.attr("name")] = elm.val();
+                } else {
+                    // Unchecked, don't record it
+                }
+            } else {
+                rtn[elm.attr("name")] = elm.val();
+            }
+        });
+
+        return rtn;
+    }
+
     function search() {
-        loadResults(searchField.val());
+        loadResults(buildSearchDict());
 
         // We want to deal with the form in javascript without submitting
         // the page
         return false;
     }
 
+    // Call setup hooks
+    $.each(that.hooks["setup"], function(_, hook) {
+        hook.call(that, modal);
+    });
+
     searchForm.submit(search);
-    var searchFieldChange = function(e) {
+    var searchChange = function(e) {
         clearTimeout($.data(this, 'timer'));
         var wait = setTimeout(search, 250);
         $(this).data('timer', wait);
     }
-    searchForm.on('input', searchFieldChange);
-    searchForm.on('change', searchFieldChange);
-    searchForm.on('keyup', searchFieldChange);
+    searchForm.on('input', searchChange);
+    searchForm.on('change', searchChange);
+    searchForm.on('keyup', searchChange);
 
     /**
      * Load page number ``page`` of the results.
      */
     function setPage(page) {
-        loadResults(searchField.val(), page)
+        loadResults(buildSearchDict(), page)
     }
 
     /**
      * Actually do the work
      */
-    function loadResults(searchTerm, page) {
+    function loadResults(searchFields, page) {
         var dataObj = {ajax: 1}
         if (window.instance) dataObj['instance'] = window.instance;
-        if (searchTerm) dataObj['q'] = searchTerm;
         if (page) dataObj['p'] = page;
+
+        var params = $.extend(dataObj, searchFields);
+
+        // Call ajax hooks
+        for (var i=0;i<that.hooks["ajax"].length;i++) {
+            var hook = that.hooks["ajax"][i];
+
+            // Allow mutation of params
+            params = hook.call(that, modal, params);
+            if (params == null) {
+                // Block request
+                return;
+            }
+        }
 
         $.ajax({
             url: searchUrl,
-            data: dataObj,
+            data: params,
             success: function(data, status) {
                 searchResults.html(data);
-                ajaxifyLinks(searchResults);
             }
         });
     }
-}
+};
 
 /**
  * Registers the javascript hooks needed by the Wagtail admin
  * 'choose <model>' button.
  */
-function setupWagtailWidget(id, url) {
+ModelChooser.prototype.setupWagtailWidget = function setupWagtailWidget(id, url) {
+    var that = this;
     var chooserElement = $('#' + id + '-chooser');
     var title = chooserElement.find('.title');
     var input = $('#' + id);
@@ -93,7 +179,7 @@ function setupWagtailWidget(id, url) {
         ModalWorkflow({
             url: url,
             onload: {
-                'show_model_chooser': setupModal
+                'show_model_chooser': that.setupModal.bind(that)
             },
             responses: {
                 instanceChosen: function(instanceData) {
@@ -109,11 +195,10 @@ function setupWagtailWidget(id, url) {
         input.val('');
         chooserElement.addClass('blank');
     });
-}
+};
 
 /**
- * Register a global function to be called when our model chooser widget
- * is rendered in Wagtail admin.
+ * Singleton instance functioning as the public API for the ModelChooser
  */
-window.createModelChooser = setupWagtailWidget;
+window.wagtail.ui.ModelChooser = new ModelChooser();
 })();

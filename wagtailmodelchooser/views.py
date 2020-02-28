@@ -85,14 +85,15 @@ def chooser(request, app_label, model_name, filter_name=None):
         'object_list': page.object_list,
         'is_searchable': is_searchable,
         'is_searching': is_searching,
+        'results_template_name': chooser.get_modal_results_template(request),
     }
 
     if ajax:
-        return render(request, 'wagtailmodelchooser/results.html', context)
+        return render(request, context['results_template_name'], context)
     else:
         return render_modal_workflow(
             request,
-            'wagtailmodelchooser/modal.html',
+            chooser.get_modal_template(request),
             None,  # Deprecated argument (still required in Wagtail 2.2)
             template_vars=context,
             json_data={

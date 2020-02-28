@@ -45,8 +45,18 @@ class Chooser(object):
     model = None
     icon = 'placeholder'
 
+    # Customize the chooser content for just this model
+    modal_template = None
+    modal_results_template = None
+
     def get_queryset(self, request):
         return self.model._default_manager.all()
+
+    def get_modal_template(self, request):
+        return self.modal_template or 'wagtailmodelchooser/modal.html'
+
+    def get_modal_results_template(self, request):
+        return self.modal_results_template or 'wagtailmodelchooser/results.html'
 
 
 registry = Registry()
