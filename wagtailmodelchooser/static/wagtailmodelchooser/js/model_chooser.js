@@ -88,7 +88,16 @@ ModelChooser.prototype.setupModal = function setupModal(modal, jsonData) {
     function buildSearchDict() {
         var rtn = {};
         searchForm.find("input, select, textarea").each(function() {
-            rtn[$(this).attr("name")] = $(this).val();
+            var elm = $(this);
+            if (elm.is("input[type=checkbox], input[type=radio]")) {
+                if (elm.prop("checked")) {
+                    rtn[elm.attr("name")] = elm.val();
+                } else {
+                    // Unchecked, don't record it
+                }
+            } else {
+                rtn[elm.attr("name")] = elm.val();
+            }
         });
 
         return rtn;
