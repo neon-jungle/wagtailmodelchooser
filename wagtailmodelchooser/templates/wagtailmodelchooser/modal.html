@@ -12,8 +12,8 @@
 	{# Need to keep the form in the HTML, even if the snippet is not searchable #}
 	{# This is to allow pagination links to be generated from the form action URL #}
 	{% block search_form %}
-	{% if is_searchable %}
 	<form class="search-bar" action="{{ chooser_url }}" method="GET">
+	{% if is_searchable %}
 		{% block search_fields %}
 		<ul class="fields">
 			<li>
@@ -25,8 +25,8 @@
 			</li>
 		</ul>
 		{% endblock %}
-	</form>
 	{% endif %}
+	</form>
 	{% endblock %}
 
 	<div id="search-results" class="listing snippets">
