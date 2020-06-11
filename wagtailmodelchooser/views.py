@@ -5,6 +5,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import Http404
 from django.shortcuts import render
 from wagtail.admin.modal_workflow import render_modal_workflow
+from wagtail.search.backends import get_search_backend
 from wagtail.search.index import Indexed
 
 from . import registry
@@ -53,7 +54,11 @@ def chooser(request, app_label, model_name, filter_name=None):
     is_searching = is_searchable and request.GET.get('q')
 
     if is_searching:
-        qs = qs.search(request.GET['q'])
+        try:
+            qs = qs.search(request.GET['q'])
+        except AttributeError:
+            s = get_search_backend()
+            qs = s.search(request.GET['q'], qs)
 
     if filter_name is not None:
         try:

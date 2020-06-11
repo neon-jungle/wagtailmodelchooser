@@ -32,6 +32,21 @@ class Author(models.Model, index.Indexed):
         return self.name
 
 
+@register_model_chooser(icon='user')
+class DefaultManagerAuthor(models.Model, index.Indexed):
+    name = models.CharField(max_length=255)
+
+    search_fields = [
+        index.SearchField('name'),
+    ]
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
 class Book(Page):
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
 
