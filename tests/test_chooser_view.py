@@ -57,7 +57,7 @@ class TestAdminFormBackend(WagtailTestUtils, TestCase):
 
     def test_chooser_view(self):
         response = self.client.get(self.chooser_url)
-        for author in Author.objects.all():
+        for author in DefaultManagerAuthor.objects.all():
             self.assertContains(response, author.name)
 
     def test_chooser_search_backend(self):
