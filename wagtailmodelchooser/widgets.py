@@ -6,6 +6,16 @@ from django.utils.translation import ugettext_lazy as _
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.widgets import AdminChooser
 
+try:
+    from wagtail.core.telepath import register
+    from wagtail.core.widget_adapters import WidgetAdapter
+except ImportError:  # do-nothing fallback for Wagtail <2.13
+    def register(adapter, cls):
+        pass
+
+    class WidgetAdapter:
+        pass
+
 
 class AdminModelChooser(AdminChooser):
     show_edit_link = False
@@ -56,13 +66,34 @@ class AdminModelChooser(AdminChooser):
             'display_title': value_data.get('display_title', ''),
         })
 
-    def render_js_init(self, id_, name, value):
+    @property
+    def modal_url(self):
         opts = self.target_model._meta
         kwargs = {'app_label': opts.app_label, 'model_name': opts.model_name}
         if self.filter_name:
             kwargs['filter_name'] = self.filter_name
 
+        return reverse('model_chooser', kwargs=kwargs)
+
+    def render_js_init(self, id_, name, value):
         return "wagtail.ui.ModelChooser.setupWagtailWidget({id}, {url});".format(
             id=json.dumps(id_),
-            url=json.dumps(reverse('model_chooser', kwargs=kwargs)),
-            filter_name=json.dumps(self.filter_name))
+            url=json.dumps(self.modal_url))
+
+
+class ModelChooserAdapter(WidgetAdapter):
+    js_constructor = 'wagtailmodelchooser.widgets.ModelChooser'
+
+    def js_args(self, widget):
+        return [
+            widget.render_html('__NAME__', None, attrs={'id': '__ID__'}),
+            widget.modal_url,
+        ]
+
+    class Media:
+        js = [
+            'wagtailmodelchooser/js/model_chooser_telepath.js',
+        ]
+
+
+register(ModelChooserAdapter(), AdminModelChooser)
