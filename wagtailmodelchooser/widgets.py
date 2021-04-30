@@ -3,6 +3,7 @@ import json
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.widgets import AdminChooser
 
 
@@ -20,19 +21,39 @@ class AdminModelChooser(AdminChooser):
 
         super(AdminModelChooser, self).__init__(**kwargs)
 
+    def get_value_data(self, value):
+        # return a dict of data required for rendering a widget with this value -
+        # namely, the ID and string representation
+        if value is None:
+            return None
+        elif isinstance(value, self.target_model):
+            instance = value
+        else:  # assume this is an instance ID
+            instance = self.target_model.objects.get(pk=value)
+
+        return {
+            'id': instance.pk,
+            'display_title': str(instance),
+        }
+
     def render_html(self, name, value, attrs):
-        instance, value = self.get_instance_and_id(self.target_model, value)
+        if WAGTAIL_VERSION >= (2, 13):
+            # From Wagtail 2.13, get_value_data is called as a preprocessing step in
+            # WidgetWithScript before invoking render_html
+            value_data = value or {}
+        else:
+            value_data = self.get_value_data(value) or {}
 
         original_field_html = super(AdminModelChooser, self).render_html(
-            name, value, attrs)
+            name, value_data.get('id'), attrs)
 
         return render_to_string("wagtailmodelchooser/model_chooser.html", {
             'widget': self,
             'model_opts': self.target_model._meta,
             'original_field_html': original_field_html,
             'attrs': attrs,
-            'value': value,
-            'item': instance,
+            'value': bool(value_data),  # only used to identify blank values
+            'display_title': value_data.get('display_title', ''),
         })
 
     def render_js_init(self, id_, name, value):
