@@ -3,7 +3,5 @@
 {% block chooser_class %}model-chooser{% endblock %}
 
 {% block chosen_state_view %}
-    <span class="title">{{ item }}</span>
+    <span class="title">{{ display_title }}</span>
 {% endblock %}
-
-{% block edit_chosen_item_url %}{% if item %}{% url 'wagtailsnippets:edit' model_opts.app_label model_opts.model_name item.id %}{% endif %}{% endblock %}

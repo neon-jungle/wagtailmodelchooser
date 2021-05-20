@@ -1,4 +1,5 @@
 import os
+from wagtail import VERSION as WAGTAIL_VERSION
 
 INSTALLED_APPS = [
     'wagtailmodelchooser',
@@ -51,9 +52,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'wagtail.core.middleware.SiteMiddleware',
 ]
+
+if WAGTAIL_VERSION < (2, 9):
+    MIDDLEWARE.append('wagtail.core.middleware.SiteMiddleware')
 
 TEMPLATES = [
     {

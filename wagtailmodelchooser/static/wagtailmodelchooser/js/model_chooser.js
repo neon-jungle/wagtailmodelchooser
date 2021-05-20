@@ -175,26 +175,65 @@ ModelChooser.prototype.setupWagtailWidget = function setupWagtailWidget(id, url)
     var title = chooserElement.find('.title');
     var input = $('#' + id);
 
-    chooserElement.find('.action-choose').click(function() {
-        ModalWorkflow({
-            url: url,
-            onload: {
-                'show_model_chooser': that.setupModal.bind(that)
-            },
-            responses: {
-                instanceChosen: function(instanceData) {
-                    input.val(instanceData.pk);
-                    title.text(instanceData.string);
-                    chooserElement.removeClass('blank');
-                }
+    // Construct initial state of the chooser from the rendered (static) HTML;
+    // this is either null (no item chosen) or a dict of id and display_title
+    var state = null;
+    if (input.val()) {
+        state = {
+            id: input.val(),
+            display_title: title.text()
+        };
+    }
+
+    // define public API functions for the chooser:
+    // https://docs.wagtail.io/en/latest/reference/streamfield/widget_api.html
+    var chooser = {
+        getState: function() { return state; },
+        getValue: function() { return state && state.id; },
+        setState: function(newState) {
+            if (newState) {
+                input.val(newState.id);
+                title.text(newState.display_title);
+                chooserElement.removeClass('blank');
+            } else {
+                input.val('');
+                chooserElement.addClass('blank');
             }
-        });
+            state = newState;
+        },
+        clear: function() {
+            chooser.setState(null);
+        },
+        focus: () => {
+            chooserElement.find('.action-choose').focus();
+        },
+        openChooserModal: function() {
+            ModalWorkflow({
+                url: url,
+                onload: {
+                    'show_model_chooser': that.setupModal.bind(that)
+                },
+                responses: {
+                    instanceChosen: function(instanceData) {
+                        chooser.setState({
+                            id: instanceData.pk,
+                            display_title: instanceData.string
+                        });
+                    }
+                }
+            });
+        }
+    };
+
+    chooserElement.find('.action-choose').click(function() {
+        chooser.openChooserModal();
     });
 
     $('.action-clear', chooserElement).click(function() {
-        input.val('');
-        chooserElement.addClass('blank');
+        chooser.clear();
     });
+
+    return chooser;
 };
 
 /**

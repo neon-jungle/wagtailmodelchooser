@@ -32,6 +32,9 @@ class ModelChooserBlock(ChooserBlock):
     def chooser(self):
         return registry.choosers[self.target_model]
 
+    def get_form_state(self, value):
+        return self.widget.get_value_data(value)
+
     def deconstruct(self):
         name, args, kwargs = super(ModelChooserBlock, self).deconstruct()
 
