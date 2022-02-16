@@ -2,7 +2,7 @@ import json
 
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.widgets import AdminChooser
 
