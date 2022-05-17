@@ -1,8 +1,8 @@
 import wagtail.admin.urls
 import wagtail.core.urls
-from django.conf.urls import include, url
+from django.urls import path, include
 
 urlpatterns = [
-    url(r'^admin/', include(wagtail.admin.urls)),
-    url(r'', include(wagtail.core.urls)),
+    path('admin/', include(wagtail.admin.urls)),
+    path('', include(wagtail.core.urls)),
 ]
