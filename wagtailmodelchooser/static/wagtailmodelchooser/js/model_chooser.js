@@ -204,6 +204,14 @@ ModelChooser.prototype.setupWagtailWidget = function setupWagtailWidget(id, url)
         clear: function() {
             chooser.setState(null);
         },
+        getTextLabel: function(opts) {
+            if (!state) return null;
+            var result = state.display_title;
+            if (opts && opts.maxLength && result.length > opts.maxLength) {
+                return result.substring(0, opts.maxLength - 1) + '…';
+            }
+            return result;
+        },
         focus: () => {
             chooserElement.find('.action-choose').focus();
         },
