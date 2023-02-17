@@ -1,6 +1,12 @@
 from django.utils.functional import cached_property, lazy
-from wagtail.core.blocks import ChooserBlock
-from wagtail.core.utils import resolve_model_string
+from wagtail import VERSION as WAGTAIL_VERSION
+
+if WAGTAIL_VERSION[0] >= 3:
+    from wagtail.blocks import ChooserBlock
+    from wagtail.coreutils import resolve_model_string
+else:
+    from wagtail.core.blocks import ChooserBlock
+    from wagtail.core.utils import resolve_model_string
 
 from . import registry
 from .widgets import AdminModelChooser
