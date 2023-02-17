@@ -6,10 +6,14 @@ from django.utils.translation import gettext_lazy as _
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.widgets import AdminChooser
 
-try:
+if WAGTAIL_VERSION[0] >= 3:
+    from wagtail.telepath import register
+    from wagtail.widget_adapters import WidgetAdapter
+elif WAGTAIL_VERSION[:2] >= (2, 13):
     from wagtail.core.telepath import register
     from wagtail.core.widget_adapters import WidgetAdapter
-except ImportError:  # do-nothing fallback for Wagtail <2.13
+else:  
+    # do-nothing fallback for Wagtail <2.13
     def register(adapter, cls):
         pass
 
