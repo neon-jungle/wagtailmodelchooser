@@ -1,6 +1,11 @@
 from django.templatetags.static import static
 from django.utils.html import format_html
-from wagtail.core import hooks
+from wagtail import VERSION as WAGTAIL_VERSION
+
+if WAGTAIL_VERSION[0] >= 3:
+    from wagtail import hooks
+else:
+    from wagtail.core import hooks
 
 import wagtailmodelchooser.urls
 
