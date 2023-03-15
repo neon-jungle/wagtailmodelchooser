@@ -1,13 +1,18 @@
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
-from wagtail.admin.edit_handlers import BaseChooserPanel
+from wagtail import VERSION as WAGTAIL_VERSION
+
+if WAGTAIL_VERSION[0] >= 3:
+    from wagtail.admin.panels import FieldPanel
+else:
+    from wagtail.admin.edit_handlers import BaseChooserPanel as FieldPanel
 
 from .widgets import AdminModelChooser
 
 FILTERS = {}
 
 
-class ModelChooserPanel(BaseChooserPanel):
+class ModelChooserPanel(FieldPanel):
     model = None
     field_name = None
     filter_name = None
