@@ -12,7 +12,7 @@ if WAGTAIL_VERSION[0] >= 3:
 elif WAGTAIL_VERSION[:2] >= (2, 13):
     from wagtail.core.telepath import register
     from wagtail.core.widget_adapters import WidgetAdapter
-else:  
+else:
     # do-nothing fallback for Wagtail <2.13
     def register(adapter, cls):
         pass
