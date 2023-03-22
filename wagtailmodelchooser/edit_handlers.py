@@ -1,11 +1,5 @@
-from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
-from wagtail import VERSION as WAGTAIL_VERSION
-
-if WAGTAIL_VERSION[0] >= 3:
-    from wagtail.admin.panels import FieldPanel
-else:
-    from wagtail.admin.edit_handlers import BaseChooserPanel as FieldPanel
+from django.utils.functional import cached_property
+from wagtail.admin.panels import FieldPanel
 
 from .widgets import AdminModelChooser
 
@@ -34,17 +28,21 @@ class ModelChooserPanel(FieldPanel):
             help_text=self.help_text
         )
 
-    def widget_overrides(self):
-        return {self.field_name: AdminModelChooser(
-            model=self.target_model, filter_name=self.filter_name)}
+    def get_form_options(self):
+        opts = super().get_form_options()
+
+        widgets = opts.setdefault("widgets", {})
+        widgets[self.field_name] = AdminModelChooser(
+            model=self.target_model, filter_name=self.filter_name)
+
+        return opts
 
     @property
     def target_model(self):
         return self.model._meta.get_field(self.field_name).remote_field.model
 
-    def render_as_field(self):
-        instance_obj = self.get_chosen_item()
-        return mark_safe(render_to_string(self.field_template, {
-            'field': self.bound_field,
-            'instance': instance_obj,
-        }))
+    @cached_property
+    def widget(self):
+
+        return AdminModelChooser(
+            model=self.target_model, filter_name=self.filter_name)

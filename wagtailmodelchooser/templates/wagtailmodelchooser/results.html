@@ -1,4 +1,4 @@
-{% load wagtailadmin_tags %}
+{% load wagtailadmin_tags wagtailimages_tags %}
 
 <div class="row">
 	<div class="result-list">
@@ -26,7 +26,8 @@
 						{% block table_row %}
 						<tr>
 							<td class="title">
-								<h2><a class="model-choice" data-pk="{{ instance.pk }}" href="#">
+								{% image instance.model_chooser_icon max-165x165 as preview %}
+								<h2><a class="model-choice" data-pk="{{ instance.pk }}" data-preview-url="{{ preview.url }}" data-preview-width="{{ preview.width }}" href="#">
 									{{ instance }}
 								</a></h2>
 							</td>

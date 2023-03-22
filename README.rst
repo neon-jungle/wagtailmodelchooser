@@ -77,6 +77,26 @@ or ``ModelChooserBlock`` in a ``StreamField`` definition:
             StreamFieldPanel('body'),
         ]
 
+You can provide the `model_chooser_icon` property on your model to enable image previews
+
+.. code:: python
+
+    class Book(Page):
+        name = models.CharField(max_length=255)
+        author = models.ForeignKey(Author)
+        thumbnail = models.ForeignKey(
+            "wagtailimages.Image", related_name="+", null=True, on_delete=models.SET_NULL
+        )
+
+        content_panels = [
+            FieldPanel('name'),
+            ModelChooserPanel('author'),
+        ]
+
+        @property
+        def model_chooser_icon(self):
+            return self.thumbnail
+
 Customisation options
 =====================
 

@@ -1,7 +1,17 @@
 {% extends "wagtailadmin/widgets/chooser.html" %}
+{% load wagtailadmin_tags %}
 
 {% block chooser_class %}model-chooser{% endblock %}
 
+{% block chosen_icon %}
+	<img class="chooser__image" data-chooser-image alt="" class="show-transparency" decoding="async" height="{{ preview.height }}" src="{{ preview.url }}" width="{{ preview.width }}" {% if not preview %}hidden{% endif %}>
+	<div class="chooser__preview" data-chooser-preview role="presentation" {% if preview %}hidden{% endif %}>
+		{% if icon %}{% icon name=icon %}{% endif %}
+	</div>
+{% endblock chosen_icon %}
+
 {% block chosen_state_view %}
-    <span class="title">{{ display_title }}</span>
+  <div data-chooser-title class="chooser__title">{{ display_title }}</div>
 {% endblock %}
+
+{{ original_field_html }}
