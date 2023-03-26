@@ -1,45 +1,13 @@
-{% load wagtailadmin_tags wagtailimages_tags %}
+{% extends "wagtailadmin/generic/chooser/results.html" %}
 
-<div class="row">
-	<div class="result-list">
-		{% if not object_list %}
-			{% block no_matches %}
-			{% if is_searching %}
-				<p>No {{ opts.verbose_name_plural }} found matching your search.</p>
-			{% else %}
-				<p>There are no {{ opts.verbose_name_plural }}.</p>
-			{% endif %}
-			{% endblock %}
-		{% else %}
-			<table class="listing">
-				<thead>
-					{% block table_header %}
-					<tr class="table-headers">
-						<th>Title</th>
-						{% block extra_table_headers %}
-						{% endblock %}
-					</tr>
-					{% endblock %}
-				</thead>
-				<tbody>
-					{% for instance in object_list %}
-						{% block table_row %}
-						<tr>
-							<td class="title">
-								{% image instance.model_chooser_icon max-165x165 as preview %}
-								<h2><a class="model-choice" data-pk="{{ instance.pk }}" data-preview-url="{{ preview.url }}" data-preview-width="{{ preview.width }}" href="#">
-									{{ instance }}
-								</a></h2>
-							</td>
-							{% block extra_table_row_columns %}
-							{% endblock %}
-						</tr>
-						{% endblock %}
-					{% endfor %}
-				</tbody>
-			</table>
-		{% endif %}
-	</div>
+{% block listing_title %}<h2>Listing title</h2>{% endblock %}
 
-	{% paginate page %}
-</div>
+
+{% block no_search_results_message %}
+<p>No {{ plural_name }} found matching your search.</p>
+{% endblock %}
+
+{% block no_items_message %}
+<p>There are no {{ plural_name }}.</p>
+{% endblock %}
+
