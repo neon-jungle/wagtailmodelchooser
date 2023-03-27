@@ -3,8 +3,12 @@ from .version import version as __version__
 from .version import version_info
 
 __all__ = [
-    '__version__', 'version_info', 'registry', 'register_model_chooser',
-    'register_simple_model_chooser', 'register_filter',
+    "__version__",
+    "version_info",
+    "registry",
+    "register_model_chooser",
+    "register_simple_model_chooser",
+    "register_filter",
 ]
 
 
@@ -26,8 +30,8 @@ class Registry(object):
         Generates a model chooser definition from a model, and adds it to the
         registry.
         """
-        name = '{}Chooser'.format(model._meta.object_name)
-        attrs = {'model': model}
+        name = "{}Chooser".format(model._meta.object_name)
+        attrs = {"model": model}
         attrs.update(kwargs)
 
         chooser = type(name, (Chooser,), attrs)
@@ -43,7 +47,7 @@ class Registry(object):
 
 class Chooser(object):
     model = None
-    icon = 'placeholder'
+    icon = "placeholder"
 
     # Customize the chooser content for just this model
     modal_template = None
@@ -53,10 +57,10 @@ class Chooser(object):
         return self.model._default_manager.all()
 
     def get_modal_template(self, request):
-        return self.modal_template or 'wagtailmodelchooser/modal.html'
+        return self.modal_template or "wagtailmodelchooser/modal.html"
 
     def get_modal_results_template(self, request):
-        return self.modal_results_template or 'wagtailmodelchooser/results.html'
+        return self.modal_results_template or "wagtailmodelchooser/results.html"
 
 
 registry = Registry()

@@ -1,4 +1,3 @@
-import inspect
 from functools import wraps
 
 
@@ -21,25 +20,14 @@ def kwarg_decorator(func):
         def my_other_func():
             pass
     """
+
     @wraps(func)
     def decorator(arg=None, **kwargs):
         if arg is None:
             return lambda arg: decorator(arg, **kwargs)
         return func(arg, **kwargs)
+
     return decorator
-
-
-def signature_matches(func, args=(), kwargs={}):
-    """
-    Work out if a function is callable with some args or not.
-    """
-    try:
-        sig = inspect.signature(func)
-        sig.bind(*args, **kwargs)
-    except TypeError:
-        return False
-    else:
-        return True
 
 
 def last_arg_decorator(func):
@@ -62,10 +50,12 @@ def last_arg_decorator(func):
 
     register_a_thing("def", my_other_func, bar=True)
     """
+
     @wraps(func)
     def decorator(*args, **kwargs):
         if signature_matches(func, args, kwargs):
             return func(*args, **kwargs)
         else:
             return lambda last: func(*(args + (last,)), **kwargs)
+
     return decorator

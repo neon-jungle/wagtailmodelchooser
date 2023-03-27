@@ -8,7 +8,7 @@ INSTALLED_APPS = [
     'taggit',
     'modelcluster',
 
-    'wagtail.core',
+    'wagtail',
     'wagtail.admin',
     'wagtail.users',
     'wagtail.sites',
@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ]
 
 if WAGTAIL_VERSION < (2, 9):
-    MIDDLEWARE.append('wagtail.core.middleware.SiteMiddleware')
+    MIDDLEWARE.append('wagtail.middleware.SiteMiddleware')
 
 TEMPLATES = [
     {

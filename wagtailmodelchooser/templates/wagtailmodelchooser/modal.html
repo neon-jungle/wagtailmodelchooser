@@ -1,25 +1,23 @@
-<header class="nice-padding hasform">
-	<div class="row">
-		<div class="left">
-			<div class="col">
-				{% block h1 %}<h1 {% if chooser.header_icon %}class="icon icon-{{ chooser.header_icon }}"{% endif %}>Choose <span>{{ opts.verbose_name }}</span></h1>{% endblock %}
-			</div>
-		</div>
-	</div>
-</header>
+{% extends "wagtailadmin/generic/chooser/chooser.html" %}
 
-<div class="nice-padding">
+{% block filter_form %}
+
 	{# Need to keep the form in the HTML, even if the snippet is not searchable #}
 	{# This is to allow pagination links to be generated from the form action URL #}
 	{% block search_form %}
-	<form class="search-bar" action="{{ chooser_url }}" method="GET">
+	<form class="search-bar" action="{{ results_url }}" method="GET">
 	{% if is_searchable %}
 		{% block search_fields %}
 		<ul class="fields">
 			<li>
-				<div class="field-content">
-					<div class="input">
-						<input type="text" name="q" id="id_q" placeholder="Search" autocomplete="off">
+				<div class="w-field__wrapper">
+					<label class="w-field__label" for="id_q" id="id_q-label">
+						Search term
+					</label>
+					<div class="w-field w-field--char_field w-field--text_input">
+						<div class="w-field__input">
+							<input type="text" name="q" placeholder="Search" id="id_q">					
+						</div>
 					</div>
 				</div>
 			</li>
@@ -28,10 +26,5 @@
 	{% endif %}
 	</form>
 	{% endblock %}
+{% endblock %}
 
-	<div id="search-results" class="listing snippets">
-		{% block search_results %}
-		{% include results_template_name %}
-		{% endblock %}
-	</div>
-</div>

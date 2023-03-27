@@ -1,13 +1,14 @@
 {% extends "wagtailadmin/generic/chooser/results.html" %}
 
-{% block listing_title %}<h2>Listing title</h2>{% endblock %}
+{% load wagtailadmin_tags wagtailimages_tags %}
+
+{% block listing_title %}{% endblock %}
 
 
 {% block no_search_results_message %}
-<p>No {{ plural_name }} found matching your search.</p>
+<p>No {{ opts.verbose_name_plural }} found matching your search.</p>
 {% endblock %}
 
 {% block no_items_message %}
-<p>There are no {{ plural_name }}.</p>
+<p>There are no {{ opts.verbose_name_plural }}.</p>
 {% endblock %}
-
