@@ -1,4 +1,5 @@
 from wagtail import hooks
+
 from . import registry
 from .viewsets import viewset_factory
 

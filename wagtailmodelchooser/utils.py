@@ -1,3 +1,4 @@
+import inspect
 from functools import wraps
 
 
@@ -28,6 +29,19 @@ def kwarg_decorator(func):
         return func(arg, **kwargs)
 
     return decorator
+
+
+def signature_matches(func, args=(), kwargs={}):
+    """
+    Work out if a function is callable with some args or not.
+    """
+    try:
+        sig = inspect.signature(func)
+        sig.bind(*args, **kwargs)
+    except TypeError:
+        return False
+    else:
+        return True
 
 
 def last_arg_decorator(func):

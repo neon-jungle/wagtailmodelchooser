@@ -57,10 +57,12 @@ class Chooser(object):
         return self.model._default_manager.all()
 
     def get_modal_template(self, request):
-        return self.modal_template or "wagtailmodelchooser/modal.html"
+        return self.modal_template or "wagtailadmin/generic/chooser/chooser.html"
 
     def get_modal_results_template(self, request):
-        return self.modal_results_template or "wagtailmodelchooser/results.html"
+        return (
+            self.modal_results_template or "wagtailadmin/generic/chooser/results.html"
+        )
 
 
 registry = Registry()
