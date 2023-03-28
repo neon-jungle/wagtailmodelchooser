@@ -3,12 +3,12 @@ from wagtail import VERSION as WAGTAIL_VERSION
 
 from wagtail.blocks import ChooserBlock
 from wagtail.coreutils import resolve_model_string
-from .viewsets import viewset_factory
+from .viewsets import viewset_factory, DeconstructibleChooserBlock
 
 from . import registry
 
 
-class ModelChooserBlock(ChooserBlock):
+class ModelChooserBlock(DeconstructibleChooserBlock):
     def __init__(self, target_model, filter_name=None, **kwargs):
         super(ModelChooserBlock, self).__init__(**kwargs)
         self._target_model = target_model
@@ -39,15 +39,6 @@ class ModelChooserBlock(ChooserBlock):
 
     def get_form_state(self, value):
         return self.widget.get_value_data(value)
-
-    def deconstruct(self):
-        name, args, kwargs = super(ModelChooserBlock, self).deconstruct()
-
-        if args:
-            args = args[1:]  # Remove the args target_model
-
-        kwargs["target_model"] = self.target_model._meta.label_lower
-        return name, args, kwargs
 
     class Meta:
         icon = "placeholder"

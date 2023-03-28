@@ -10,11 +10,13 @@ from . import registry
 class DeconstructibleChooserBlock(ChooserBlock):
     # only used in migrations, which are useless anyway for streamfields
     def deconstruct(self):
-        return (
-            "wagtailmodelchooser.blocks.ModelChooserBlock",
-            (self.model_class,) + self._constructor_args[0],
-            self._constructor_args[1],
-        )
+        name, args, kwargs = super().deconstruct()
+
+        if args:
+            args = args[1:]  # Remove the args target_model
+
+        kwargs["target_model"] = self.target_model._meta.label_lower
+        return name, args, kwargs
 
 
 class ModelRegistryMixin:
