@@ -2,8 +2,9 @@
 Wagtail model chooser
 =====================
 
-A plugin for Wagtail that provides a ``ModelChooserPanel`` and ``ModelChooserBlock``
+A plugin for Wagtail that provides convenience methods for setting up chooser modals 
 for arbitrary models.
+
 
 Installing
 ==========
@@ -22,7 +23,7 @@ Then add it to your ``INSTALLED_APPS``:
         # ...
     ]
 
-It works with Wagtail 2.2 and upwards.
+It works with Wagtail 4.0 and upwards.
 For older versions of Wagtail check previous versions of the package.
 
 Quick start
@@ -46,7 +47,7 @@ For simple cases, decorate your model with ``@register_model_chooser``:
             # The ``str()`` of your model will be used in the chooser
             return self.name
 
-You can then use either ``ModelChooserPanel`` in an edit handler definition,
+You can then use either ``FieldPanel`` in an edit handler definition,
 or ``ModelChooserBlock`` in a ``StreamField`` definition:
 
 .. code:: python
@@ -54,9 +55,8 @@ or ``ModelChooserBlock`` in a ``StreamField`` definition:
     from wagtail.wagtailcore.blocks import RichTextBlock
     from wagtail.wagtailcore.fields import StreamField
     from wagtail.wagtailcore.models import Page
-    from wagtail.wagtailadmin.edit_handlers import FieldPanel, StreamFieldPanel
+    from wagtail.wagtailadmin.edit_handlers import FieldPanel
     from wagtailmodelchooser.blocks import ModelChooserBlock
-    from wagtailmodelchooser.edit_handlers import ModelChooserPanel
 
     class Book(Page):
         name = models.CharField(max_length=255)
@@ -64,7 +64,7 @@ or ``ModelChooserBlock`` in a ``StreamField`` definition:
 
         content_panels = [
             FieldPanel('name'),
-            ModelChooserPanel('author'),
+            FieldPanel('author'),
         ]
 
     class ContentPage(Page):
@@ -76,6 +76,8 @@ or ``ModelChooserBlock`` in a ``StreamField`` definition:
         content_panels = [
             StreamFieldPanel('body'),
         ]
+
+
 
 Customisation options
 =====================
@@ -102,9 +104,8 @@ If you wanted to add an additional filter field to the popup, you might do that 
     @register_model_chooser
     class CityChooser(Chooser):
         model = City
-        modal_template = 'wagtailmodelchooser/city_modal.html'
-        modal_results_template = \
-            'wagtailmodelchooser/city_modal_results.html'
+        modal_template = 'app_name/city_modal.html'
+        modal_results_template = 'app_name/city_modal_results.html'
 
         def get_queryset(self, request):
             qs = super().get_queryset(request)
@@ -113,25 +114,5 @@ If you wanted to add an additional filter field to the popup, you might do that 
 
             return qs
 
-.. code:: html
 
-    {% extends 'wagtailmodelchooser/modal.html' %}
-
-    {% block search_fields %}
-    <input type="search" name="q" id="id_q" placeholder="Search..." autocomplete="off">
-    <input type="checkbox" name="capital">
-    {% endblock %}
-
-.. code:: html
-
-    {% extends 'wagtailmodelchooser/results.html' %}
-
-    {% block extra_table_headers %}
-    <th>Is Capital</th>
-    {% endblock %}
-
-    {% block extra_table_row_columns %}
-    <td>{{instance.capital}}</td>
-    {% endblock %}
-
-You can also register hooks to modify the javascript behaviour of the model. See the add*Hook methods on `window.wagtail.ui.ModelChooser`.
+Since wagtailmodelchooser is built largely on the (ChooserViewSet)[https://docs.wagtail.org/en/stable/extending/generic_views.html#chooserviewset] functionality already found in Wagtail, if you wish to do deeper customisation it is recommended to use that feature directly.

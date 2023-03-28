@@ -21,11 +21,13 @@ def kwarg_decorator(func):
         def my_other_func():
             pass
     """
+
     @wraps(func)
     def decorator(arg=None, **kwargs):
         if arg is None:
             return lambda arg: decorator(arg, **kwargs)
         return func(arg, **kwargs)
+
     return decorator
 
 
@@ -62,10 +64,12 @@ def last_arg_decorator(func):
 
     register_a_thing("def", my_other_func, bar=True)
     """
+
     @wraps(func)
     def decorator(*args, **kwargs):
         if signature_matches(func, args, kwargs):
             return func(*args, **kwargs)
         else:
             return lambda last: func(*(args + (last,)), **kwargs)
+
     return decorator
