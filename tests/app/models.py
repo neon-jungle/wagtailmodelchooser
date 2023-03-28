@@ -47,7 +47,7 @@ class ContentPage(Page):
         [
             ("text", RichTextBlock()),
             ("author", ModelChooserBlock(Author)),
-            ("book", ModelChooserBlock(Book)),
+            ("book", ModelChooserBlock("app.Book")),
         ]
     )
 

@@ -40,6 +40,7 @@ class Registry(object):
         return model
 
     def register_filter(self, model, name, filter):
+        """Not currently used or documented, but could be re-implemented pretty easily"""
         assert model in self.choosers
         self.filters[(model, name)] = filter
         return filter
