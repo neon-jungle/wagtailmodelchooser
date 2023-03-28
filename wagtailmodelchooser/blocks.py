@@ -1,11 +1,8 @@
 from django.utils.functional import cached_property, lazy
-from wagtail import VERSION as WAGTAIL_VERSION
-
-from wagtail.blocks import ChooserBlock
 from wagtail.coreutils import resolve_model_string
-from .viewsets import viewset_factory, DeconstructibleChooserBlock
 
 from . import registry
+from .viewsets import DeconstructibleChooserBlock, viewset_factory
 
 
 class ModelChooserBlock(DeconstructibleChooserBlock):
