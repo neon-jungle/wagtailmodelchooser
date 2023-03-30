@@ -117,4 +117,4 @@ If you wanted to add an additional filter field to the popup, you might do that 
 
 Since wagtailmodelchooser is built largely on the ChooserViewSet_ functionality already found in Wagtail, if you wish to do deeper customisation it is recommended to use that feature directly.
 
-.. _ChooserViewSet: https://docs.wagtail.io/en/v2.0/reference/contrib/modeladmin/choosers.html#chooserviewset
+.. _ChooserViewSet: https://docs.wagtail.org/en/stable/extending/generic_views.html#chooserviewset
