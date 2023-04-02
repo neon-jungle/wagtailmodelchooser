@@ -9,6 +9,7 @@ __all__ = [
     "register_model_chooser",
     "register_simple_model_chooser",
     "register_filter",
+    "Chooser",
 ]
 
 
